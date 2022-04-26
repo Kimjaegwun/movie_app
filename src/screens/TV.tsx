@@ -4,7 +4,6 @@ import {useQuery, useQueryClient} from 'react-query';
 import {tvApi} from '../api';
 import HList from '../components/HList';
 import Loader from '../components/Loader';
-import VMedia from '../components/VMedia';
 
 const TV = () => {
   const queryClient = useQueryClient();
@@ -41,9 +40,9 @@ const TV = () => {
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
-      <HList title="Trending TV" data={trendingData.results} />
-      <HList title="Airing Today" data={todayData.results} />
-      <HList title="Top Rated TV" data={topData.results} />
+      <HList title="Trending TV" data={trendingData!.results} />
+      <HList title="Airing Today" data={todayData!.results} />
+      <HList title="Top Rated TV" data={topData!.results} />
     </ScrollView>
   );
 };

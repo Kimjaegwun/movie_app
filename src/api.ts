@@ -150,17 +150,21 @@ interface TVFetchers {
 
 export const moviesApi: MovieFetchers = {
   trending: () =>
-    fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}`).then(res =>
-      res.json(),
-    ),
+    fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}`).then(res => {
+      return res.json();
+    }),
   upcoming: ({pageParam}) =>
     fetch(
       `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${pageParam}`,
-    ).then(res => res.json()),
+    ).then(res => {
+      return res.json();
+    }),
   nowPlaying: () =>
     fetch(
       `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`,
-    ).then(res => res.json()),
+    ).then(res => {
+      return res.json();
+    }),
   search: ({queryKey}) => {
     const [_, query] = queryKey;
     return fetch(

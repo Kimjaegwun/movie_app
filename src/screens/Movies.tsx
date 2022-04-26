@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Alert, Dimensions, FlatList} from 'react-native';
+import {Alert, Dimensions, FlatList, View} from 'react-native';
 import {useInfiniteQuery, useQuery, useQueryClient} from 'react-query';
 import Swiper from 'react-native-swiper';
 import styled from 'styled-components/native';
 
+import {Movie, MovieResponse, moviesApi} from '../api';
 import Slide from '../components/Slide';
 import HMedia from '../components/HMedia';
-import {Movie, MovieResponse, moviesApi} from '../api';
 import Loader from '../components/Loader';
 import HList from '../components/HList';
 
@@ -31,12 +31,13 @@ const HSeparator = styled.View`
 const Movies: React.FC<NativeStackScreenProps<any, 'Movies'>> = () => {
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
+  const currentIndex = useRef(0);
 
   const {isLoading: nowPlayingLoading, data: nowPlayingData} =
-    useQuery<MovieResponse>(['movies', 'nowPlaying'], moviesApi.nowPlaying);
+    useQuery<MovieResponse>(['movies', 'nowPlaying'], moviesApi.nowPlaying, {});
 
   const {isLoading: trendingLoading, data: trendingData} =
-    useQuery<MovieResponse>(['movies', 'trending'], moviesApi.trending);
+    useQuery<MovieResponse>(['movies', 'trending'], moviesApi.trending, {});
 
   const {
     isLoading: upcomingLoading,
@@ -81,6 +82,8 @@ const Movies: React.FC<NativeStackScreenProps<any, 'Movies'>> = () => {
     }
   };
 
+  console.log('start');
+
   return loading ? (
     <Loader />
   ) : upcomingData ? (
@@ -101,15 +104,12 @@ const Movies: React.FC<NativeStackScreenProps<any, 'Movies'>> = () => {
         <React.Fragment>
           <Swiper
             horizontal
-            loop
             showsButtons={false}
-            showsPagination={false}
-            autoplay
-            autoplayTimeout={3.5}
+            showsPagination={true}
             containerStyle={{
               width: SCREEN_WIDTH,
               height: SCREEN_HEIGHT / 4,
-              marginBottom: 30,
+              marginBottom: 35,
             }}>
             {nowPlayingData?.results.map((movie: any) => {
               return (

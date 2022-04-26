@@ -1,6 +1,6 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import Root from './navigation/Root';
+import Root from './src/navigation/Root';
 import {useColorScheme} from 'react-native';
 import {ThemeProvider} from 'styled-components';
 import {darkTheme, lightTheme} from './styled';
