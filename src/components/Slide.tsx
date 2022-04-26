@@ -6,7 +6,7 @@ import {
   useColorScheme,
 } from 'react-native';
 import styled from 'styled-components/native';
-import {Movie} from '../api';
+import {Movie} from '../type';
 import {makeImgPath} from '../utils';
 import Poster from './Poster';
 

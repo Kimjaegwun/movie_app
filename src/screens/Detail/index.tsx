@@ -11,12 +11,12 @@ import styled from 'styled-components/native';
 import Icon from 'react-native-ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 
-import {Movie, moviesApi, TV, tvApi} from '../api';
-import Poster from '../components/Poster';
-import {makeImgPath} from '../utils';
-import {BLACK_COLOR} from '../colors';
+import {Movie, moviesApi, TV, tvApi} from '../../api';
+import Poster from '../../components/Poster';
+import {makeImgPath} from '../../utils';
+import {BLACK_COLOR} from '../../colors';
 import {useQuery} from 'react-query';
-import Loader from '../components/Loader';
+import Loader from '../../components/Loader';
 
 const {height: SCREEN_HEIGHT} = Dimensions.get('window');
 

@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {RefreshControl, ScrollView, StyleSheet} from 'react-native';
 import {useQuery, useQueryClient} from 'react-query';
-import {tvApi} from '../api';
-import HList from '../components/HList';
-import Loader from '../components/Loader';
+import {tvApi} from '../../api';
+import HList from '../../components/HList';
+import Loader from '../../components/Loader';
 
 const TV = () => {
   const queryClient = useQueryClient();

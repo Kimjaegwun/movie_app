@@ -1,7 +1,7 @@
 import React from 'react';
 import {FlatList} from 'react-native';
 import styled from 'styled-components/native';
-import {Movie, TV} from '../api';
+import {Movie, TV} from '../type';
 import VMedia from './VMedia';
 
 const ListTitle = styled.Text`
