@@ -1,24 +1,19 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useInfiniteQuery, useQueryClient} from 'react-query';
 
-import HMedia from '../../components/HMedia';
 import Loader from '../../components/Loader';
-import {usePlayingQuery, useTrendingQuery} from './useDetailQuery';
 import {Movie, MovieResponse, RootStackParamList} from '../../type';
 import {moviesApi} from '../../api';
 import MainPage from './mainPage';
+import produce from 'immer';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Movie'>;
 
 const Movies: React.FC<Props> = () => {
   const queryClient = useQueryClient();
+
   const [refreshing, setRefreshing] = useState(false);
-
-  const {isLoading: nowPlayingLoading, data: nowPlayingData} =
-    usePlayingQuery();
-
-  const {isLoading: trendingLoading, data: trendingData} = useTrendingQuery();
 
   const {
     isLoading: upcomingLoading,
@@ -37,27 +32,28 @@ const Movies: React.FC<Props> = () => {
     },
   );
 
+  const [upcoming, setUpcoming] = useState<Movie[]>([]);
+
+  useEffect(() => {
+    if (upcomingData) {
+      const get = upcomingData.pages
+        .map(page => {
+          return page.results;
+        })
+        .flat();
+      setUpcoming(get);
+    }
+  }, [upcomingData]);
+
   const onRefresh = async () => {
     setRefreshing(true);
     await queryClient.refetchQueries(['movies']);
     setRefreshing(false);
   };
 
-  const renderHMedia = ({item}: {item: Movie}) => (
-    <HMedia
-      posterPath={item.poster_path || ''}
-      originalTitle={item.original_title}
-      overview={item.overview}
-      releaseDate={item.release_date}
-      fullData={item}
-    />
-  );
-
   const movieKeyExtractor = (item: Movie) => {
     return item.id + '';
   };
-
-  const loading = nowPlayingLoading || trendingLoading || upcomingLoading;
 
   const loadMore = () => {
     if (hasNextPage) {
@@ -65,18 +61,28 @@ const Movies: React.FC<Props> = () => {
     }
   };
 
+  const handleActive = useCallback((id: number) => {
+    setUpcoming(
+      produce(draft => {
+        draft[id].active === undefined
+          ? (draft[id].active = true)
+          : draft[id].active
+          ? (draft[id].active = false)
+          : (draft[id].active = true);
+      }),
+    );
+  }, []);
+
   const MainPageProps = {
     loadMore,
     onRefresh,
     refreshing,
-    upcomingData,
+    upcoming,
     movieKeyExtractor,
-    renderHMedia,
-    nowPlayingData,
-    trendingData,
+    handleActive,
   };
 
-  return loading ? (
+  return upcomingLoading ? (
     <Loader />
   ) : upcomingData ? (
     <MainPage {...MainPageProps} />

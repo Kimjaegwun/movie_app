@@ -19,6 +19,7 @@ export interface Movie {
   video: boolean;
   vote_average: number;
   vote_count: number;
+  active?: boolean;
 }
 
 export interface MovieDetails {

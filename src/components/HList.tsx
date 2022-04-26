@@ -22,7 +22,7 @@ export const HListSeparator = styled.View`
 
 interface HListProps {
   title: string;
-  data: any[];
+  data?: any[];
 }
 
 type Props = {

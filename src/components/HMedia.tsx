@@ -30,10 +30,25 @@ const Release = styled.Text`
   opacity: 0.6;
 `;
 
+const TitleWrapper = styled.View`
+  flex-direction: row;
+  align-items: center;
+  width: 80%;
+  padding: 5px 0;
+`;
+
 const Title = styled.Text`
   color: white;
   font-weight: 600;
-  margin-top: 7px;
+  flex: 1;
+`;
+
+const BookmarkBtn = styled.TouchableOpacity<{active?: boolean}>`
+  width: 20px;
+  height: 20px;
+  border: 1px solid white;
+  border-radius: 10px;
+  background-color: ${props => (props.active ? 'purple' : 'transparent')};
 `;
 
 interface HMediaProps {
@@ -43,6 +58,9 @@ interface HMediaProps {
   releaseDate?: string;
   voteAverage?: number;
   fullData: Movie;
+  active?: boolean;
+  index: number;
+  handleActive: any;
 }
 
 const HMedia: React.FC<HMediaProps> = ({
@@ -52,6 +70,9 @@ const HMedia: React.FC<HMediaProps> = ({
   releaseDate,
   voteAverage,
   fullData,
+  active,
+  index,
+  handleActive,
 }) => {
   const navigation = useNavigation();
   const goToDetail = () => {
@@ -69,11 +90,19 @@ const HMedia: React.FC<HMediaProps> = ({
       <HMovie>
         <Poster path={posterPath} />
         <HColumn>
-          <Title>
-            {originalTitle.length > 30
-              ? `${originalTitle.slice(0, 30)}...`
-              : originalTitle}
-          </Title>
+          <TitleWrapper>
+            <Title>
+              {originalTitle.length > 30
+                ? `${originalTitle.slice(0, 30)}...`
+                : originalTitle}
+            </Title>
+            <BookmarkBtn
+              active={active}
+              onPress={() => {
+                handleActive(index);
+              }}
+            />
+          </TitleWrapper>
           {releaseDate ? (
             <Release>
               {new Date(releaseDate).toLocaleDateString('ko', {
@@ -94,5 +123,4 @@ const HMedia: React.FC<HMediaProps> = ({
     </TouchableOpacity>
   );
 };
-
-export default HMedia;
+export default React.memo(HMedia);

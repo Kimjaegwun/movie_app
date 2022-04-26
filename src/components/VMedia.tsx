@@ -55,4 +55,4 @@ const VMedia: React.FC<VMediaProps> = ({
   );
 };
 
-export default VMedia;
+export default React.memo(VMedia);

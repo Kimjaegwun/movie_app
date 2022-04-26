@@ -1,12 +1,12 @@
 import React from 'react';
-import {Dimensions, FlatList} from 'react-native';
-import Swiper from 'react-native-swiper';
+import {FlatList} from 'react-native';
 import styled from 'styled-components/native';
-import HList from '../../components/HList';
-import Slide from '../../components/Slide';
-import {InfinityResponse, Movie, MovieResponse} from '../../type';
 
-const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get('window');
+import HList from '../../components/HList';
+import HMedia from '../../components/HMedia';
+import {Movie, MovieResponse} from '../../type';
+import SwiperComponent from './swiper';
+import {useTrendingQuery, usePlayingQuery} from './useDetailQuery';
 
 const ListTitle = styled.Text`
   color: white;
@@ -27,22 +27,19 @@ type Props = {
   loadMore: () => void;
   onRefresh: () => void;
   refreshing: boolean;
-  upcomingData?: InfinityResponse;
+  upcoming?: Movie[];
   movieKeyExtractor: (item: Movie) => string;
-  renderHMedia: any;
   nowPlayingData?: MovieResponse;
-  trendingData?: MovieResponse;
+  handleActive: (id: number) => void;
 };
 
 const MainPage = ({
   loadMore,
   onRefresh,
   refreshing,
-  upcomingData,
+  upcoming,
   movieKeyExtractor,
-  renderHMedia,
-  nowPlayingData,
-  trendingData,
+  handleActive,
 }: Props) => {
   return (
     <FlatList
@@ -50,54 +47,40 @@ const MainPage = ({
       onEndReachedThreshold={3}
       onRefresh={onRefresh}
       refreshing={refreshing}
-      data={upcomingData?.pages
-        .map(page => {
-          return page.results;
-        })
-        .flat()}
+      data={upcoming}
       keyExtractor={movieKeyExtractor}
       ItemSeparatorComponent={HSeparator}
-      renderItem={renderHMedia}
-      ListHeaderComponent={() => (
-        <React.Fragment>
-          <SwiperComponent nowPlayingData={nowPlayingData} />
-          <HList title="Treding Movies" data={trendingData?.results || []} />
-          <ComingSoonTitle>Coming soon</ComingSoonTitle>
-        </React.Fragment>
-      )}
+      renderItem={({item, index}) => {
+        const {poster_path, original_title, overview, release_date, active} =
+          item;
+        return (
+          <HMedia
+            posterPath={poster_path || ''}
+            originalTitle={original_title}
+            overview={overview}
+            releaseDate={release_date}
+            fullData={item}
+            active={active}
+            index={index}
+            handleActive={handleActive}
+          />
+        );
+      }}
+      ListHeaderComponent={HeaderComponent}
     />
   );
 };
 
-type SProps = {
-  nowPlayingData?: MovieResponse;
-};
+const HeaderComponent = () => {
+  const {data: nowPlayingData} = usePlayingQuery();
+  const {data: trendingData} = useTrendingQuery();
 
-const SwiperComponent = ({nowPlayingData}: SProps) => {
   return (
-    <Swiper
-      horizontal
-      showsButtons={false}
-      showsPagination={true}
-      containerStyle={{
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT / 4,
-        marginBottom: 35,
-      }}>
-      {nowPlayingData?.results.map((movie: any) => {
-        return (
-          <Slide
-            key={movie.id}
-            backdropPath={movie.backdrop_path || ''}
-            posterPath={movie.poster_path || ''}
-            originalTitle={movie.original_title}
-            voteAverage={movie.vote_average}
-            overview={movie.overview}
-            fullData={movie}
-          />
-        );
-      })}
-    </Swiper>
+    <React.Fragment>
+      <SwiperComponent nowPlayingData={nowPlayingData} />
+      <HList title="Treding Movies" data={trendingData?.results || []} />
+      <ComingSoonTitle>Coming soon</ComingSoonTitle>
+    </React.Fragment>
   );
 };
 
