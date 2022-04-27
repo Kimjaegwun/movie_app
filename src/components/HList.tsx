@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {FlatList} from 'react-native';
 import styled from 'styled-components/native';
@@ -30,6 +31,8 @@ type Props = {
 };
 
 const HList: React.FC<HListProps> = ({title, data}) => {
+  const navigation = useNavigation<any>();
+
   return (
     <ListContainer>
       <ListTitle>{title}</ListTitle>
@@ -40,14 +43,27 @@ const HList: React.FC<HListProps> = ({title, data}) => {
         ItemSeparatorComponent={HListSeparator}
         data={data}
         renderItem={({item}: Props) => {
-          return (
-            <VMedia
-              posterPath={item.poster_path || ''}
-              originalTitle={item.original_name ?? item.original_title}
-              voteAverage={item.vote_average}
-              fullData={item}
-            />
-          );
+          const {poster_path, original_name, vote_average, original_title} =
+            item;
+
+          const goToDetail = () => {
+            navigation.navigate('Stack', {
+              screen: 'Detail',
+              params: {
+                ...item,
+              },
+            });
+          };
+
+          const VProps = {
+            posterPath: poster_path || '',
+            originalTitle: original_name ?? original_title,
+            voteAverage: vote_average,
+            fullData: item,
+            goToDetail,
+          };
+
+          return <VMedia {...VProps} />;
         }}
       />
     </ListContainer>

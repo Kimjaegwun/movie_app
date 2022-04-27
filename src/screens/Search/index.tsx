@@ -1,7 +1,5 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {ScrollView} from 'react-native';
-import {useQuery} from 'react-query';
-import {moviesApi, tvApi} from '../../api';
 import HList from '../../components/HList';
 import InputText from '../../components/InputText';
 import Loader from '../../components/Loader';

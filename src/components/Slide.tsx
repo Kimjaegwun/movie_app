@@ -59,7 +59,7 @@ interface SlideProps {
   originalTitle: string;
   voteAverage: number;
   overview: string;
-  fullData: Movie;
+  goToDetail: () => void;
 }
 
 const Slide: React.FC<SlideProps> = ({
@@ -68,19 +68,9 @@ const Slide: React.FC<SlideProps> = ({
   originalTitle,
   voteAverage,
   overview,
-  fullData,
+  goToDetail,
 }) => {
   const isDark = useColorScheme() === 'dark';
-  const navigation = useNavigation();
-  const goToDetail = () => {
-    // @ts-ignore
-    navigation.navigate('Stack', {
-      screen: 'Detail',
-      params: {
-        ...fullData,
-      },
-    });
-  };
 
   return (
     <TouchableWithoutFeedback onPress={goToDetail}>

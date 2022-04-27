@@ -22,25 +22,15 @@ interface VMediaProps {
   originalTitle: string;
   voteAverage: number;
   fullData: Movie | TV;
+  goToDetail: () => void;
 }
 
 const VMedia: React.FC<VMediaProps> = ({
   posterPath,
   originalTitle,
   voteAverage,
-  fullData,
+  goToDetail,
 }) => {
-  const navigation = useNavigation();
-  const goToDetail = () => {
-    // @ts-ignore
-    navigation.navigate('Stack', {
-      screen: 'Detail',
-      params: {
-        ...fullData,
-      },
-    });
-  };
-
   return (
     <TouchableOpacity onPress={goToDetail}>
       <MovieContainer>
