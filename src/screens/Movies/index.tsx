@@ -1,16 +1,15 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {useInfiniteQuery, useQueryClient} from 'react-query';
-
-import Loader from '../../components/Loader';
-import {Movie, MovieResponse, RootStackParamList} from '../../type';
-import {moviesApi} from '../../api';
-import MainPage from './main';
-import produce from 'immer';
 import {FlatList} from 'react-native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useQueryClient} from 'react-query';
 import styled from 'styled-components/native';
-import HMedia from '../../components/HMedia';
+import produce from 'immer';
+
+import {Movie, RootStackParamList} from '../../type';
+import {useUpcomingQuery} from './useMoviesQuery';
+import Loader from '../../components/Loader';
 import MovieHeaderComponent from './header';
+import MovieMain from './main';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Movie'>;
 
@@ -21,27 +20,20 @@ const HSeparator = styled.View`
 const Movies: React.FC<Props> = () => {
   const queryClient = useQueryClient();
 
-  const [refreshing, setRefreshing] = useState(false);
-
   const {
     isLoading: upcomingLoading,
     data: upcomingData,
     hasNextPage,
     fetchNextPage,
-  } = useInfiniteQuery<MovieResponse>(
-    ['movies', 'upcoming'],
-    moviesApi.upcoming,
-    {
-      getNextPageParam: currentPage => {
-        const nextPage = currentPage.page + 1;
+  } = useUpcomingQuery();
 
-        return nextPage > currentPage.total_pages ? null : currentPage.page + 1;
-      },
-    },
-  );
+  const loadMore = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
 
   const [upcoming, setUpcoming] = useState<Movie[]>([]);
-
   useEffect(() => {
     if (upcomingData) {
       const get = upcomingData.pages
@@ -53,6 +45,8 @@ const Movies: React.FC<Props> = () => {
     }
   }, [upcomingData]);
 
+  const [refreshing, setRefreshing] = useState(false);
+
   const onRefresh = async () => {
     setRefreshing(true);
     await queryClient.refetchQueries(['movies']);
@@ -61,12 +55,6 @@ const Movies: React.FC<Props> = () => {
 
   const movieKeyExtractor = (item: Movie) => {
     return item.id + '';
-  };
-
-  const loadMore = () => {
-    if (hasNextPage) {
-      fetchNextPage();
-    }
   };
 
   const handleActive = useCallback((id: number) => {
@@ -81,15 +69,6 @@ const Movies: React.FC<Props> = () => {
     );
   }, []);
 
-  const MainPageProps = {
-    loadMore,
-    onRefresh,
-    refreshing,
-    upcoming,
-    movieKeyExtractor,
-    handleActive,
-  };
-
   return upcomingLoading ? (
     <Loader />
   ) : upcomingData ? (
@@ -102,22 +81,14 @@ const Movies: React.FC<Props> = () => {
       keyExtractor={movieKeyExtractor}
       ItemSeparatorComponent={HSeparator}
       renderItem={({item, index}) => {
-        const {poster_path, original_title, overview, release_date, active} =
-          item;
-        return (
-          <HMedia
-            posterPath={poster_path || ''}
-            originalTitle={original_title}
-            overview={overview}
-            releaseDate={release_date}
-            fullData={item}
-            active={active}
-            index={index}
-            handleActive={handleActive}
-          />
-        );
+        const MainProps = {
+          item,
+          index,
+          handleActive,
+        };
+        return <MovieMain {...MainProps} />;
       }}
-      ListHeaderComponent={MovieHeaderComponent}
+      ListHeaderComponent={<MovieHeaderComponent />}
     />
   ) : null;
 };

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import HList from '../../components/HList';
+import Loader from '../../components/Loader';
 import SwiperComponent from './swiper';
 import {usePlayingQuery, useTrendingQuery} from './useMoviesQuery';
 
@@ -16,13 +17,17 @@ const ComingSoonTitle = styled(ListTitle)`
 `;
 
 const MovieHeaderComponent = () => {
-  const {data: nowPlayingData} = usePlayingQuery();
-  const {data: trendingData} = useTrendingQuery();
+  const {isLoading: nowLoading, data: nowPlayingData} = usePlayingQuery();
+  const {isLoading: trendLoading, data: trendingData} = useTrendingQuery();
 
-  return (
+  return nowLoading || trendLoading ? (
+    <Loader />
+  ) : (
     <React.Fragment>
-      <SwiperComponent nowPlayingData={nowPlayingData} />
-      <HList title="Treding Movies" data={trendingData?.results || []} />
+      {nowPlayingData && <SwiperComponent nowPlayingData={nowPlayingData} />}
+      {trendingData && (
+        <HList title="Treding Movies" data={trendingData.results} />
+      )}
       <ComingSoonTitle>Coming soon</ComingSoonTitle>
     </React.Fragment>
   );

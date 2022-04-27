@@ -1,20 +1,22 @@
 import {AxiosError} from 'axios';
 import {useInfiniteQuery, useQuery} from 'react-query';
-import {moviesApi} from '../../api';
-import {MovieResponse} from '../../type';
+import {moviesApi, tvApi} from '../../api';
+import {MovieResponse, TVResponse} from '../../type';
 
-export const usePlayingQuery = () => {
+export const useSearchMovieQuery = (value: string) => {
   return useQuery<MovieResponse, AxiosError>(
-    ['movies', 'nowPlaying'],
-    moviesApi.nowPlaying,
+    ['searchMovies', value],
+    moviesApi.search,
+    {
+      enabled: false,
+    },
   );
 };
 
-export const useTrendingQuery = () => {
-  return useQuery<MovieResponse, AxiosError>(
-    ['movies', 'trending'],
-    moviesApi.trending,
-  );
+export const useSearchTVQuery = (value: string) => {
+  return useQuery<TVResponse, AxiosError>(['searchTV', value], tvApi.search, {
+    enabled: false,
+  });
 };
 
 export const useUpcomingQuery = () => {

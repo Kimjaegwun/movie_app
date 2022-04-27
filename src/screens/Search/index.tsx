@@ -1,63 +1,45 @@
 import React, {useState} from 'react';
+import {ScrollView} from 'react-native';
 import {useQuery} from 'react-query';
-import styled from 'styled-components/native';
 import {moviesApi, tvApi} from '../../api';
 import HList from '../../components/HList';
+import InputText from '../../components/InputText';
 import Loader from '../../components/Loader';
-
-const Container = styled.ScrollView``;
-
-const SearchBar = styled.TextInput`
-  background-color: white;
-  padding: 10px 15px;
-  border-radius: 15px;
-  width: 90%;
-  margin: 10px auto;
-  margin-bottom: 40px;
-`;
+import {useInputProps} from '../../hook';
+import {useSearchMovieQuery} from './useSearhQuery';
 
 const Search = () => {
-  const [query, setQuery] = useState('');
-  const {
-    isLoading: loadingMoves,
-    data: moviesData,
-    refetch: searchMovies,
-  } = useQuery(['searchMovies', query], moviesApi.search, {enabled: false});
-
-  const {
-    isLoading: loadingTV,
-    data: tvData,
-    refetch: searchTV,
-  } = useQuery(['searchTV', query], tvApi.search, {enabled: false});
-
-  const onChangeText = (text: string) => {
-    setQuery(text);
-  };
-
   const onSubmit = () => {
-    if (query === '') {
+    if (InputProps.value === '') {
       return;
     }
     searchMovies();
     searchTV();
   };
+  const InputProps = useInputProps(onSubmit);
+  const {value} = InputProps;
+
+  const {
+    isLoading: loadingMoves,
+    data: moviesData,
+    refetch: searchMovies,
+  } = useSearchMovieQuery(value);
+
+  const {
+    isLoading: loadingTV,
+    data: tvData,
+    refetch: searchTV,
+  } = useSearchMovieQuery(value);
 
   return (
-    <Container>
-      <SearchBar
-        placeholder="Search for Movie or TV Show"
-        placeholderTextColor="gray"
-        returnKeyType="search"
-        autoCapitalize="none"
-        onChangeText={onChangeText}
-        onSubmitEditing={onSubmit}
-      />
+    <ScrollView>
+      <InputText {...InputProps} />
       {loadingMoves || loadingTV ? <Loader /> : null}
       {moviesData ? (
         <HList title="Moive Results" data={moviesData.results} />
       ) : null}
       {tvData ? <HList title="TV Results" data={tvData.results} /> : null}
-    </Container>
+    </ScrollView>
   );
 };
 

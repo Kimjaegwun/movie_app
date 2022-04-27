@@ -57,10 +57,10 @@ interface HMediaProps {
   overview: string;
   releaseDate?: string;
   voteAverage?: number;
-  fullData: Movie;
   active?: boolean;
   index: number;
   handleActive: any;
+  goToDetail: () => void;
 }
 
 const HMedia: React.FC<HMediaProps> = ({
@@ -69,22 +69,11 @@ const HMedia: React.FC<HMediaProps> = ({
   overview,
   releaseDate,
   voteAverage,
-  fullData,
   active,
   index,
   handleActive,
+  goToDetail,
 }) => {
-  const navigation = useNavigation();
-  const goToDetail = () => {
-    // @ts-ignore
-    navigation.navigate('Stack', {
-      screen: 'Detail',
-      params: {
-        ...fullData,
-      },
-    });
-  };
-
   return (
     <TouchableOpacity onPress={goToDetail}>
       <HMovie>

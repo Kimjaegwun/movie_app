@@ -13,7 +13,7 @@ const axiosInstancs = axios.create({
 
 export const moviesApi: MovieFetchers = {
   trending: () =>
-    axiosInstancs.get(`trending/movie/week`).then(res => res.data),
+    axiosInstancs.get('trending/movie/week').then(res => res.data),
   upcoming: ({pageParam}) => {
     return axiosInstancs
       .get(`/movie/upcoming?language=en-US&page=${pageParam}`)
@@ -43,14 +43,12 @@ export const tvApi: TVFetchers = {
     fetch(`${BASE_URL}/trending/tv/week?api_key=${API_KEY}`).then(res =>
       res.json(),
     ),
-  airingToday: () =>
-    fetch(`${BASE_URL}/tv/airing_today?api_key=${API_KEY}`).then(res =>
-      res.json(),
-    ),
-  topRated: () =>
-    fetch(`${BASE_URL}/tv/top_rated?api_key=${API_KEY}`).then(res =>
-      res.json(),
-    ),
+  airingToday: () => {
+    return axiosInstancs.get('/tv/airing_today').then(res => res.data);
+  },
+  topRated: () => {
+    return axiosInstancs.get('/tv/top_rated').then(res => res.data);
+  },
   search: ({queryKey}) => {
     const [_, query] = queryKey;
     return fetch(

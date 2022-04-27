@@ -14,7 +14,6 @@ const SwiperComponent = ({nowPlayingData}: SProps) => {
   return (
     <Swiper
       horizontal
-      showsButtons={false}
       showsPagination={true}
       containerStyle={{
         width: SCREEN_WIDTH,
