@@ -5,10 +5,18 @@ import {useInfiniteQuery, useQueryClient} from 'react-query';
 import Loader from '../../components/Loader';
 import {Movie, MovieResponse, RootStackParamList} from '../../type';
 import {moviesApi} from '../../api';
-import MainPage from './mainPage';
+import MainPage from './main';
 import produce from 'immer';
+import {FlatList} from 'react-native';
+import styled from 'styled-components/native';
+import HMedia from '../../components/HMedia';
+import MovieHeaderComponent from './header';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Movie'>;
+
+const HSeparator = styled.View`
+  height: 20px;
+`;
 
 const Movies: React.FC<Props> = () => {
   const queryClient = useQueryClient();
@@ -85,7 +93,32 @@ const Movies: React.FC<Props> = () => {
   return upcomingLoading ? (
     <Loader />
   ) : upcomingData ? (
-    <MainPage {...MainPageProps} />
+    <FlatList
+      onEndReached={loadMore}
+      onEndReachedThreshold={3}
+      onRefresh={onRefresh}
+      refreshing={refreshing}
+      data={upcoming}
+      keyExtractor={movieKeyExtractor}
+      ItemSeparatorComponent={HSeparator}
+      renderItem={({item, index}) => {
+        const {poster_path, original_title, overview, release_date, active} =
+          item;
+        return (
+          <HMedia
+            posterPath={poster_path || ''}
+            originalTitle={original_title}
+            overview={overview}
+            releaseDate={release_date}
+            fullData={item}
+            active={active}
+            index={index}
+            handleActive={handleActive}
+          />
+        );
+      }}
+      ListHeaderComponent={MovieHeaderComponent}
+    />
   ) : null;
 };
 
