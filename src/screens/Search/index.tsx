@@ -4,7 +4,7 @@ import HList from '../../components/HList';
 import InputText from '../../components/InputText';
 import Loader from '../../components/Loader';
 import {useInputProps} from '../../hook';
-import {useSearchMovieQuery} from './useSearhQuery';
+import {useSearchMovieQuery, useSearchTVQuery} from './useSearhQuery';
 
 const Search = () => {
   const onSubmit = () => {
@@ -27,7 +27,7 @@ const Search = () => {
     isLoading: loadingTV,
     data: tvData,
     refetch: searchTV,
-  } = useSearchMovieQuery(value);
+  } = useSearchTVQuery(value);
 
   return (
     <ScrollView>

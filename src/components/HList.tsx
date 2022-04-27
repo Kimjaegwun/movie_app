@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
 import React from 'react';
+import {useNavigation} from '@react-navigation/native';
 import {FlatList} from 'react-native';
 import styled from 'styled-components/native';
 import {Movie, TV} from '../type';
