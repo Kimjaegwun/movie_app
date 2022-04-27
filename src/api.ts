@@ -13,15 +13,12 @@ const axiosInstancs = axios.create({
 
 export const moviesApi: MovieFetchers = {
   trending: () =>
-    axiosInstancs
-      .get(`trending/movie/week?api_key=${API_KEY}`)
-      .then(res => res.data),
-  upcoming: ({pageParam}) =>
-    fetch(
-      `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${pageParam}`,
-    ).then(res => {
-      return res.json();
-    }),
+    axiosInstancs.get(`trending/movie/week`).then(res => res.data),
+  upcoming: ({pageParam}) => {
+    return axiosInstancs
+      .get(`/movie/upcoming?language=en-US&page=${pageParam}`)
+      .then(res => res.data);
+  },
   nowPlaying: () => {
     return axiosInstancs
       .get('/movie/now_playing?language=en-US&page=1')
