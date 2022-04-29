@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import HList from '../../components/HList';
 import Loader from '../../components/Loader';
-import SwiperComponent from './swiper';
+import SwiperComponent from './Swiper';
 import {usePlayingQuery, useTrendingQuery} from './useMoviesQuery';
 
 const ListTitle = styled.Text`

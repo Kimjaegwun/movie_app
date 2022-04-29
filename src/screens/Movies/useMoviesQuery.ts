@@ -17,6 +17,14 @@ export const useTrendingQuery = () => {
   );
 };
 
+// queries를 통해 동시에 호출 가능, suspense 예방
+// export const multiQuery = () => {
+//   return useQueries([
+//     {queryKey: ['movies', 'nowPlaying'], queryFn: moviesApi.nowPlaying},
+//     {queryKey: ['movies', 'trending'], queryFn: moviesApi.trending},
+//   ]);
+// };
+
 export const useUpcomingQuery = () => {
   return useInfiniteQuery<MovieResponse, AxiosError>(
     ['movies', 'upcoming'],

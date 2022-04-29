@@ -8,8 +8,8 @@ import produce from 'immer';
 import {Movie, RootStackParamList} from '../../type';
 import {useUpcomingQuery} from './useMoviesQuery';
 import Loader from '../../components/Loader';
-import MovieHeaderComponent from './header';
-import MovieMain from './main';
+import MovieHeaderComponent from './MovieHeader';
+import MovieMain from './MovieMain';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Movie'>;
 
@@ -60,14 +60,15 @@ const Movies: React.FC<Props> = () => {
   const handleActive = useCallback((id: number) => {
     setUpcoming(
       produce(draft => {
-        draft[id].active === undefined
-          ? (draft[id].active = true)
-          : draft[id].active
+        draft[id].active
           ? (draft[id].active = false)
           : (draft[id].active = true);
       }),
     );
   }, []);
+
+  // queries 사용
+  // const [playing, tranding] = multiQuery();
 
   return upcomingLoading ? (
     <Loader />

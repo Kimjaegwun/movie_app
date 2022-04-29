@@ -8,14 +8,17 @@ export const useSearchMovieQuery = (value: string) => {
     ['searchMovies', value],
     moviesApi.search,
     {
-      enabled: false,
+      enabled: Boolean(value),
+      // 이전 상태 유지
+      keepPreviousData: true,
     },
   );
 };
 
 export const useSearchTVQuery = (value: string) => {
   return useQuery<TVResponse, AxiosError>(['searchTV', value], tvApi.search, {
-    enabled: false,
+    enabled: Boolean(value),
+    keepPreviousData: true,
   });
 };
 

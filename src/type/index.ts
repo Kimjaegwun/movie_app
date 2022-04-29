@@ -115,6 +115,7 @@ export interface TVDetails {
     }[];
   };
   images: object;
+  imdb_id?: string;
 }
 
 interface BaseResponse {
