@@ -4,6 +4,7 @@ import {MovieFetchers, TVFetchers} from './type';
 const BASE_URL = 'https://api.themoviedb.org/3';
 const API_KEY = '10923b261ba94d897ac6b81148314a3f';
 
+// instance로 base_url 지정
 const axiosInstancs = axios.create({
   baseURL: `${BASE_URL}`,
   params: {
@@ -11,6 +12,7 @@ const axiosInstancs = axios.create({
   },
 });
 
+// 상태에 따른 api 분류
 export const moviesApi: MovieFetchers = {
   trending: () =>
     axiosInstancs.get('trending/movie/week').then(res => res.data),

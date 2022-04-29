@@ -3,8 +3,10 @@ import {useInfiniteQuery, useQuery} from 'react-query';
 import {moviesApi} from '../../api';
 import {MovieResponse} from '../../type';
 
+// movie query 호출
 export const usePlayingQuery = () => {
   return useQuery<MovieResponse, AxiosError>(
+    // key 값 지정
     ['movies', 'nowPlaying'],
     moviesApi.nowPlaying,
   );
@@ -25,11 +27,13 @@ export const useTrendingQuery = () => {
 //   ]);
 // };
 
+// infinite query를 활용해 scroll 구현
 export const useUpcomingQuery = () => {
   return useInfiniteQuery<MovieResponse, AxiosError>(
     ['movies', 'upcoming'],
     moviesApi.upcoming,
     {
+      // currentPage param은 전달된 data 값이라고 보면 됩니다.
       getNextPageParam: currentPage => {
         const nextPage = currentPage.page + 1;
 
