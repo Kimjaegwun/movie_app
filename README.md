@@ -33,4 +33,5 @@
 - Data Fetching 라이브러리로 상태관리를 좀 더 쉽게하고, caching / polling등 다양한 기능을 제공
 
   정리글: https://velog.io/@familyman80/React-Query-%ED%95%9C%EA%B8%80-%EB%A9%94%EB%89%B4%EC%96%BC
+
   참고글: https://ridicorp.com/story/how-to-use-redux-in-ridi/
