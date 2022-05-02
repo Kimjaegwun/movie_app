@@ -1,9 +1,9 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import Tabs from './Tabs';
 import Stack from './Stack';
 
-const Nav = createNativeStackNavigator();
+const Nav = createStackNavigator();
 
 const Root = () => {
   return (
