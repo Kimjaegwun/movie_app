@@ -34,4 +34,4 @@
 
   정리글: https://velog.io/@familyman80/React-Query-%ED%95%9C%EA%B8%80-%EB%A9%94%EB%89%B4%EC%96%BC
 
-  참고글: https://ridicorp.com/story/how-to-use-redux-in-ridi/
+  참고글: https://techblog.woowahan.com/6339/
