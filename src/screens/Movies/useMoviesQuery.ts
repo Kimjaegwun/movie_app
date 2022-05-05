@@ -7,6 +7,9 @@ export const usePlayingQuery = () => {
   return useQuery<MovieResponse, AxiosError>(
     ['movies', 'nowPlaying'],
     moviesApi.nowPlaying,
+    {
+      // refetchInterval: 5000,
+    },
   );
 };
 

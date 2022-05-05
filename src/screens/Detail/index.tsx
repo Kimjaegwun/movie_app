@@ -32,7 +32,9 @@ const Detail: React.FC<DetailScreenProps> = ({
   };
 
   const isMovie = 'original_title' in params;
-  const {isLoading, data} = useDetailQuery(isMovie, params);
+  const {isLoading, data, isRefetching} = useDetailQuery(isMovie, params);
+
+  console.log(isRefetching);
 
   useEffect(() => {
     setOptions({

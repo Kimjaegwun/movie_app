@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {FlatList} from 'react-native';
 import styled from 'styled-components/native';
 import {Movie, TV} from '../type';
 import VMedia from './VMedia';
+import analytics, {firebase} from '@react-native-firebase/analytics';
 
 const ListTitle = styled.Text`
   color: white;
@@ -46,7 +47,7 @@ const HList: React.FC<HListProps> = ({title, data}) => {
           const {poster_path, original_name, vote_average, original_title} =
             item;
 
-          const goToDetail = () => {
+          const goToDetail = async () => {
             navigation.navigate('Stack', {
               screen: 'Detail',
               params: {

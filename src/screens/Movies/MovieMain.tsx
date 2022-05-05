@@ -36,4 +36,4 @@ const MovieMain = ({item, index, handleActive}: Props) => {
   return <HMedia {...MediaProps} />;
 };
 
-export default MovieMain;
+export default React.memo(MovieMain);

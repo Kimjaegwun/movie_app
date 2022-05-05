@@ -112,4 +112,4 @@ const HMedia: React.FC<HMediaProps> = ({
     </TouchableOpacity>
   );
 };
-export default React.memo(HMedia);
+export default HMedia;
