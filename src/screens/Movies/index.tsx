@@ -49,6 +49,7 @@ const Movies: React.FC<Props> = () => {
 
   const onRefresh = async () => {
     setRefreshing(true);
+    // moives를 key로 가지고 있는 query 모두 fetching
     await queryClient.refetchQueries(['movies']);
     setRefreshing(false);
   };

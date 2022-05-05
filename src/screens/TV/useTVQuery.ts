@@ -3,6 +3,7 @@ import {useQuery} from 'react-query';
 import {tvApi} from '../../api';
 import {TVResponse} from '../../type';
 
+// tv query 호출
 export const useTodayTVQuery = () => {
   return useQuery<TVResponse, AxiosError>(['tv', 'today'], tvApi.airingToday);
 };

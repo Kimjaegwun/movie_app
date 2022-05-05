@@ -8,6 +8,7 @@ export const useSearchMovieQuery = (value: string) => {
     ['searchMovies', value],
     moviesApi.search,
     {
+      // enabled를 통해 입력할떄마다 fetching
       enabled: Boolean(value),
       // 이전 상태 유지
       keepPreviousData: true,
