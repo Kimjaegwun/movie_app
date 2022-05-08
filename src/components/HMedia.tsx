@@ -70,7 +70,6 @@ const HMedia: React.FC<HMediaProps> = ({
   releaseDate,
   voteAverage,
   active,
-  index,
   handleActive,
   goToDetail,
 }) => {
@@ -85,12 +84,7 @@ const HMedia: React.FC<HMediaProps> = ({
                 ? `${originalTitle.slice(0, 30)}...`
                 : originalTitle}
             </Title>
-            <BookmarkBtn
-              active={active}
-              onPress={() => {
-                handleActive(index);
-              }}
-            />
+            <BookmarkBtn active={active} onPress={handleActive} />
           </TitleWrapper>
           {releaseDate ? (
             <Release>

@@ -23,6 +23,10 @@ const MovieMain = ({item, index, handleActive}: Props) => {
     });
   }, [item, navigation]);
 
+  const handling = () => {
+    handleActive(index);
+  };
+
   const MediaProps = {
     posterPath: poster_path || '',
     originalTitle: original_title,
@@ -30,7 +34,7 @@ const MovieMain = ({item, index, handleActive}: Props) => {
     releaseDate: release_date,
     active,
     index,
-    handleActive,
+    handleActive: handling,
     goToDetail,
   };
   return <HMedia {...MediaProps} />;
